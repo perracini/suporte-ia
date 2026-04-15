@@ -1,0 +1,42 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+  kafka:
+    bootstrap-servers: ${spring.embedded.kafka.brokers:localhost:9092}
+  cache:
+    type: none
+
+app:
+  embedded:
+    enabled: false
+  security:
+    jwt:
+      secret: dGVzdC1zZWNyZXQtZm9yLWp3dC10ZXN0cy1vbmx5LWRvLW5vdC11c2U=
+      expiration-minutes: 60
+  llama:
+    base-url: http://localhost:11434
+    model: llama3.2
+    timeout-seconds: 5
+    rate-limiter:
+      permits: 2
+      acquire-timeout-seconds: 1
+  kafka:
+    topics:
+      ticket-created: ticket.created
+      ticket-created-dlt: ticket.created.DLT
+    retry:
+      initial-interval-ms: 50
+      multiplier: 2.0
+      max-interval-ms: 200
+      max-attempts: 3
+
+logging:
+  level:
+    com.eneng.suporte: DEBUG
